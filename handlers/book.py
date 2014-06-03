@@ -3,8 +3,7 @@
 import tornado.web
 
 #param of a book
-book_fields = ['isbn', 'title', 'subtitle', 'image', 'author',
-			'date_released', 'description']
+book_fields = ['book_name', 'author', 'genre', 'image_url', 'summary']
 
 class BookHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -16,7 +15,7 @@ class BookHandler(tornado.web.RequestHandler):
 			else: 
 				search.pop(key)
 		
-		coll = self.application.db.books
+		coll = self.application.db['Book']
 		
 		shouldsearch = False
 		for key in search:
@@ -37,44 +36,65 @@ class BookHandler(tornado.web.RequestHandler):
 		#没有把unicode转换成utf-8码
 
 class AddBookHandler(tornado.web.RequestHandler):
-	def get(self, isbn=None):
+	def get(self, book_name=None):	#实际不需要这个API
 		book = dict()
-		if isbn:
-			coll = self.application.db.books
-			book = coll.find_one({"isbn": isbn})
+		if book_name:
+			coll = self.application.db['Book']
+			book = coll.find_one({"book_name": book_name})
 		self.render("book_edit.html",
 			page_title="Burt's Books",
 			header_text="Edit book",
 			book=book)
 
-	def post(self, isbn=None):
+	def post(self, book_name=None):
 		import time
-		coll = self.application.db.books
+		BookTable = self.application.db['Book']
+		BorrowBookTable = self.application.db["BorrowBook"]
+
+		# 1. Insert new book to the [Book Table]
 		book = dict()
-		if isbn:
-			book = coll.find_one({"isbn": isbn})
+		if book_name:
+			book = BookTable.find_one({"book_name": book_name}) #找到已存在的book并且修改
 		for key in book_fields:
 			book[key] = self.get_argument(key, None)
 
-		if isbn:
-			coll.save(book)
+		if book_name:
+			BookTable.save(book)
 		else:
 			book['date_added'] = int(time.time())
-			coll.insert(book)
+			BookTable.insert(book)
+
+		# 2. Insert info to [BorrowBook Table]
+		new_row = dict()
+		new_row['book_name'] = self.get_argument('book_name')
+		new_row['owner_id'] = self.get_argument('user_id')
+		new_row['borrower_id'] = None
+		new_row['state'] = 'available'
+		BorrowBookTable.insert(new_row)
 
 		del book['_id']
 		self.write(book)
 
 class DeleteBookHandler(tornado.web.RequestHandler):
 	def delete(self):
-		book_id = self.get_argument('isbn')
-		coll = self.application.db.books
-		books_to_delete = coll.find({'isbn': book_id})
+		
+		BookTable = self.application.db['Book']
+		BorrowBookTable = self.application.db['BorrowBook']
+		SaveBookTable = self.application.db['SaveBook']
+		book_name = self.get_argument('book_name')
+		user_id = self.get_argument('user_id')
+		books_to_delete = BookTable.find({'book_name': book_name})
 
 		result = []
 		for book in books_to_delete:
 			del book["_id"]
 			result.append(book)
 
-		coll.remove({'isbn': book_id})
+		# 1. Delete from the [Book Table]
+		BookTable.remove({'book_name': book_name})
+		# 2. Delete from the [BorrowBook Table]
+		BorrowBookTable.remove({'book_name': book_name, 'user_id': user_id})
+		# 3. Delete from the [SaveBook Table]
+		SaveBookTable.remove({'book_name': book_name, 'owner_id': user_id})
+
 		self.write(str(result))
