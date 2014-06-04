@@ -2,12 +2,7 @@
 
 import tornado.web
 import tornado.ioloop
-import os
-import sys
-
-import pymongo
-
-from model.entity import Entity
+import torndb
 
 class BaseHandler(tornado.web.RequestHandler):
 	def getCurrentUser(self):

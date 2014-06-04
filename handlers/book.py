@@ -1,12 +1,15 @@
 #coding:utf-8
 
 import tornado.web
+import torndb
+import json
 
 #param of a book
 book_fields = ['book_name', 'author', 'genre', 'image_url', 'summary']
 
 class BookHandler(tornado.web.RequestHandler):
 	def get(self):
+		# 1. Get the search params
 		search = dict()
 		for key in book_fields:
 			search[key] = self.get_argument(key, None)
@@ -14,71 +17,54 @@ class BookHandler(tornado.web.RequestHandler):
 				search[key] = search[key].encode("utf-8")
 			else: 
 				search.pop(key)
-		
-		coll = self.application.db['Book']
-		
-		shouldsearch = False
-		for key in search:
-			if search[key] != None:
-				shouldsearch = True
-		
-		if shouldsearch:
-			books = coll.find(search)
+
+
+		print "SEARCH DICT ------------- " + str(search)
+		# 2. Search through the table
+		condition = ""
+		first = True
+		for key in search.keys():
+			if not first:
+				condition += ' AND b.%s LIKE \'%s\'' % (key, search[key])
+			else:
+				first = False
+				condition += 'b.%s LIKE \'%s\'' % (key, search[key])
+
+		if condition != "":
+			q_sentence = "SELECT * FROM Book b WHERE " + condition
 		else:
-			books = coll.find()
+			q_sentence = "SELECT * FROM Book b"
+		print q_sentence
 
 		result = []
-		for book in books:
-			del book["_id"]
-			for key in book.keys():
-				key = key.encode()
-				if type(book[key]) == str: 
-					book[key] = book[key].encode()
+		for book in self.application.db.query(q_sentence):
 			result.append(book)
-		print result
-		print str(result)
+		
+		print "Return -- " + str(result)
 		self.write(str(result))	#不能返回python的list数据格式，需要把list转换成字符串
 		#没有把unicode转换成utf-8码
 
 class AddBookHandler(tornado.web.RequestHandler):
-	def get(self, book_name=None):	#实际不需要这个API
-		book = dict()
-		if book_name:
-			coll = self.application.db['Book']
-			book = coll.find_one({"book_name": book_name})
-		self.render("book_edit.html",
-			page_title="Burt's Books",
-			header_text="Edit book",
-			book=book)
-
+	# 暂时没有考虑book_name重复的情况应该怎么通知用户/修改数据库
 	def post(self, book_name=None):
-		import time
-		BookTable = self.application.db['Book']
-		BorrowBookTable = self.application.db["BorrowBook"]
 
-		# 1. Insert new book to the [Book Table]
-		book = dict()
-		if book_name:
-			book = BookTable.find_one({"book_name": book_name}) #找到已存在的book并且修改
-		for key in book_fields:
-			book[key] = self.get_argument(key, None)
+		book_name = self.get_argument('book_name', None).encode('utf-8')
+		author = self.get_argument('author', None).encode('utf-8')
+		genre = self.get_argument('genre', None).encode('utf-8')
+		summary = self.get_argument('summary', None).encode('utf-8')
+		user_id = self.get_argument('user_id', None).encode('utf-8')
 
-		if book_name:
-			BookTable.save(book)
-		else:
-			book['date_added'] = int(time.time())
-			BookTable.insert(book)
+		# 1. Insert into the Book Table
+		tup = (book_name, author, genre, summary)
+		sql_sent = 'INSERT INTO Book VALUES' + str(tup)
+		self.application.db.execute(sql_sent)
 
-		# 2. Insert info to [BorrowBook Table]
-		new_row = dict()
-		new_row['book_name'] = self.get_argument('book_name')
-		new_row['owner_id'] = self.get_argument('user_id')
-		new_row['borrower_id'] = None
-		new_row['state'] = 'available'
-		BorrowBookTable.insert(new_row)
+		# 2. Insert into the BorrowBook Table
+		tup2 = (user_id, book_name, 'available', 0)
+		sql_sent2 = 'INSERT INTO BorrowBook VALUES' + str(tup2)
+		self.application.db.execute(sql_sent2)
 
-		del book['_id']
-		self.write(book)
+		self.write(str(tup))
 
 class DeleteBookHandler(tornado.web.RequestHandler):
 	def delete(self):

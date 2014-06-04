@@ -1,0 +1,4 @@
+name: sysubookex
+version: 1
+
+worker: tornado
