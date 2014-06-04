@@ -9,15 +9,13 @@ import pymongo
 SETTINGS = dict(
 	template_path=os.path.join(os.path.dirname(__file__), "templates"),
 	static_path=os.path.join(os.path.dirname(__file__), "static"),
-	debug=True,
+	cookie_secret="Q21RWvKbSlqao0wY0wcCKW497Fav7ENRnpB3u68kXPI=",
 )
-
-#database connection
-conn = pymongo.Connection("localhost", 27017)
 
 application = tornado.web.Application(
                 handlers = urls,
                 **SETTINGS
 )
 
+conn = pymongo.Connection("localhost", 27017)
 application.db = conn["bookex"]
