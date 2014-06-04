@@ -1,7 +1,6 @@
 #coding:utf-8
 
 import tornado.web
-import json
 
 #param of a book
 book_fields = ['book_name', 'author', 'genre', 'image_url', 'summary']
@@ -31,8 +30,13 @@ class BookHandler(tornado.web.RequestHandler):
 		result = []
 		for book in books:
 			del book["_id"]
-			result.append(json.dumps(book))
-
+			for key in book.keys():
+				key = key.encode()
+				if type(book[key]) == str: 
+					book[key] = book[key].encode()
+			result.append(book)
+		print result
+		print str(result)
 		self.write(str(result))	#不能返回python的list数据格式，需要把list转换成字符串
 		#没有把unicode转换成utf-8码
 
