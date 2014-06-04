@@ -68,24 +68,22 @@ class AddBookHandler(tornado.web.RequestHandler):
 
 class DeleteBookHandler(tornado.web.RequestHandler):
 	def delete(self):
-		
-		BookTable = self.application.db['Book']
-		BorrowBookTable = self.application.db['BorrowBook']
-		SaveBookTable = self.application.db['SaveBook']
-		book_name = self.get_argument('book_name')
+
+		book_name = self.get_argument('book_name').encode('utf-8')
 		user_id = self.get_argument('user_id')
-		books_to_delete = BookTable.find({'book_name': book_name})
 
-		result = []
-		for book in books_to_delete:
-			del book["_id"]
-			result.append(book)
-
+		# 0. Find out the book in the Book Table first
+		sql_sent0 = 'SELECT * FROM Book WHERE book_name = \'' + book_name + '\''
+		book = self.application.db.query(sql_sent0)
+		
 		# 1. Delete from the [Book Table]
-		BookTable.remove({'book_name': book_name})
+		sql_sent1 = 'DELETE FROM Book WHERE book_name = \'' + book_name + '\''
+		self.application.db.execute(sql_sent1)
 		# 2. Delete from the [BorrowBook Table]
-		BorrowBookTable.remove({'book_name': book_name, 'user_id': user_id})
+		sql_sent2 = 'DELETE FROM BorrowBook WHERE book_name = \'' + book_name + '\' AND owner_id = \'' + user_id + '\''
+		self.application.db.execute(sql_sent2)
 		# 3. Delete from the [SaveBook Table]
-		SaveBookTable.remove({'book_name': book_name, 'owner_id': user_id})
+		sql_sent3 = 'DELETE FROM SaveBook WHERE book_name = \'' + book_name + '\' AND user_id = \'' + user_id + '\''
+		self.application.db.execute(sql_sent3)
 
-		self.write(str(result))
+		self.write(str(book))
