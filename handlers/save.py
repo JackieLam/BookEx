@@ -1,49 +1,51 @@
 import tornado.web
-import torndb
 
 class SaveBookHandler(tornado.web.RequestHandler):
 	def get(self):
-		user_id = self.get_argument('user_id')
-		SaveBookTable = self.application.db['SaveBook']
-		BookTable = self.application.db['Book']
-		records = SaveBookTable.find({'user_id': user_id})
+		user_id = self.get_argument('user_id').encode('utf-8')
+
+		q_sentence = 'SELECT book_name FROM SaveBook WHERE user_id = \'' + user_id + '\''
+		book_names = self.application.db.query(q_sentence)
 
 		result = []
-		for record in records: 
-			book = BookTable.find_one({'book_name': record['book_name']})
-			if book:
-				del book['_id']
-				result.append(book)
+		for book_name in book_names:
+			q_book = 'SELECT * FROM Book WHERE book_name = \'' + book_name['book_name'] + '\''
+			book = self.application.db.query(q_book)
+			result.append(book)
 
 		self.write(str(result))
 
 	def post(self):
-		user_id = self.get_argument('user_id')
-		book_name = self.get_argument('book_name')
-		SaveBookTable = self.application.db['SaveBook']
-		BookTable = self.application.db['Book']
-		# 1. If no save record, save the book. 
-		if not SaveBookTable.find_one({'user_id': user_id, 'book_name': book_name}):
-			SaveBookTable.insert({'user_id': user_id, 'book_name': book_name})
-			# 2. Return the book information
-			book = BookTable.find_one({'book_name': book_name})
-			del book['_id']
-			self.write(book)
-		else:
-			self.write({'error': 'Already existed'})
+		user_id = self.get_argument('user_id').encode('utf-8')
+		book_name = self.get_argument('book_name').encode('utf-8')
+
+		tup = (user_id, book_name)
+		sql_sbquery = 'SELECT * FROM SaveBook WHERE book_name = \'' + book_name + '\' AND user_id = \'' + user_id + '\''
+		savebook_row = self.application.db.query(sql_sbquery)
+		if not savebook_row: 
+			# 1. Insert into the SaveBook Table
+			sql_savebook = 'INSERT INTO SaveBook VALUES ' + str(tup)
+			self.application.db.execute(sql_savebook)
+			# 2. Query the book information and return
+			sql_bookquery = 'SELECT * FROM Book WHERE book_name = \'' + book_name + '\''
+			book = self.application.db.query(sql_bookquery)
+			self.write(str(book))
+		else: 
+			self.write({"error": "Already collected"})
 
 	def delete(self):
-		user_id = self.get_argument('user_id')
-		book_name = self.get_argument('book_name')
-		SaveBookTable = self.application.db['SaveBook']
-		BookTable = self.application.db['Book']
+		user_id = self.get_argument('user_id').encode('utf-8')
+		book_name = self.get_argument('book_name').encode('utf-8')
 
-		# 1. If there's save record, delete the book. 
-		if SaveBookTable.find_one({'user_id': user_id, 'book_name': book_name}):
-			SaveBookTable.remove({'user_id': user_id, 'book_name': book_name})
-			# 2. Return the book information
-			book = BookTable.find_one({'book_name': book_name})
-			del book['_id']
-			self.write(book)
-		else:
-			self.write({'error': 'Have not saved the book before'})
+		sql_sbquery = 'SELECT * FROM SaveBook WHERE book_name = \'' + book_name + '\' AND user_id = \'' + user_id + '\''
+		savebook_row = self.application.db.query(sql_sbquery)
+		if savebook_row: 
+			# 1. Delete the row in SaveBook Table
+			sql_savebook = 'DELETE FROM SaveBook WHERE user_id = \'' + user_id + '\' AND book_name = \'' + book_name + '\''
+			self.application.db.execute(sql_savebook)
+			# 2. Query the book information and return
+			sql_bookquery = 'SELECT * FROM Book WHERE book_name = \'' + book_name + '\''
+			book = self.application.db.query(sql_bookquery)
+			self.write(str(book))
+		else: 
+			self.write({"error": "Not collected"})
