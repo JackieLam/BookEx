@@ -3,6 +3,12 @@
 import tornado.web
 import tornado.ioloop
 import torndb
+import os
+import sys
+
+import pymongo
+
+from model.entity import *
 
 class BaseHandler(tornado.web.RequestHandler):
 	def getCurrentUser(self):
@@ -18,26 +24,40 @@ class MainHandler(BaseHandler):
 		self.write("\n")
 
 class LoginHandler(BaseHandler):
+	def get(self):
+		information = ""
+		self.render("login.html",
+					information = information)
+
 	def post(self):
 		userLoginFields = ['user_id', 'password']
 		userDict = self.application.db.user
 		userInfo = dict()
-		for key in userLoginFields:
-			userInfo[key] = self.get_argument(key, None)
-		if userInfo["user_id"]:
-			searchResult = userDict.find_one({"user_id": userInfo["user_id"]})
-			if searchResult:
-				if userInfo["password"] == searchResult["password"]:
-					del searchResult["_id"]
-					self.write(searchResult)
+		user_id = self.get_argument("user_id", None)
+		password = self.get_argument("password", None)
+		sql_sbquery = 'SELECT * FROM User WHERE user_id = \'' + user_id + '\''
+		user_row = self.applicaion.db.query(sql_sbquery)
+		#for key in userLoginFields:
+		#	userInfo[key] = self.get_argument(key, None)
+		information = ""
+		if user_id:
+			#searchResult = userDict.find_one({"user_id": userInfo["user_id"]})
+			if user_row:
+				sql_sbquery2 = 'SELECT * FROM Users WHERE user_id = \'' + user_id + '\' AND password = \'' + password + '\''
+				user_row2 = self.application.db.query(sql_sbquery2)
+				if user_row2:
+				#if userInfo["password"] == searchResult["password"]:
 					self.set_secure_cookie("user", userInfo["user_id"])
+					self.redirect("/")
+					return
 				else:
-					self.write("wrong password")
+					information = "密码错误"
 			else:
-				self.write("user not found")
+				information = "帐号不存在"
 		else:
-			self.write("user_id cannot be empty")
-		self.write("\n")
+			information = "帐号不能为空"
+		self.render("login.html",
+					information = information)
 
 class LogoutHandler(BaseHandler):
 	def get(self):
@@ -45,21 +65,42 @@ class LogoutHandler(BaseHandler):
 		self.write("logout succeed\n")
 
 class RegisterHandler(tornado.web.RequestHandler):
+	def get(self):
+		information = ""
+		self.render("register.html",
+					information = information)
+
 	def post(self, user_id=None):
-		userRegisteFields = ['user_id', 'password', 'user_name', 'email', 'cellphone', 'address']
+		userRegisteFields = ['user_id', 'password', 'confirm_password', 'email', 'address']
+		user_id = self.get_argument("user_id", None)
+		user_name = user_id
+		password = self.get_argument('password', None)
+		confirm_password = self.get_argument('confirm_password', None)
+		email = self.get_argument('email', None)
+		address = self.get_argument('address', None)
+		
 		userDict = self.application.db.user
 		userInfo = dict()
-		for key in userRegisteFields:
-			userInfo[key] = self.get_argument(key, None)
-
-		if userInfo["user_id"]:
-			searchResult = userDict.find_one({"user_id": userInfo["user_id"]})
-			if searchResult:
-				self.write("This ID has been registered")
-			else:	
-				userDict.insert(userInfo)
-				del userInfo["_id"]
-				self.write(userInfo)
+		#for key in userRegisteFields:
+		#	userInfo[key] = self.get_argument(key, None)
+		information = ""
+		if password == confirm_password:
+			if user_id:
+				#searchResult = userDict.find_one({"user_id": userInfo["user_id"]})
+				sql_sbquery = 'SELECT * FROM Users WHERE user_id = \'' + user_id + '\''
+				user_row = self.applicaion.db.query(sql_sbquery)
+				if searchResult:
+					information = "该帐号已被注册"
+				else:
+					#userDict.insert(userInfo)
+					tup = (user_id, user_name, email, address, password)
+					sql_sent = 'INSERT INTO Users VALUES' + str(tup)
+					self.application.db.execute(sql_sent)
+					self.redirect("/api/v1/users/login")
+					return
+			else:
+				information = "帐号不得为空"
 		else:
-			self.write("user_id cannot be empty")
-		self.write("\n")
+			information = "两次密码输入不一致"
+		self.render("register.html",
+					information = information)
