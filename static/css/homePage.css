@@ -1,0 +1,53 @@
+.bigBody
+{
+    width: 936px;
+    margin: 0 auto;
+}
+img {
+    height:250px;
+    float: left;
+}
+.personInfo 
+{
+    float: left;
+    margin-left: 50px;
+}
+.firstPart
+{
+    margin-bottom:30px;
+}
+hr
+{
+    margin-bottom:30px;
+}
+.myBook
+{
+    padding:5px;
+}
+ul
+{
+    margin: 5px 15px 20px 0;
+    
+}
+    ul li img
+    {
+        width:106px;
+        height:158px;
+    }
+    ul li p
+    {
+         color:#37a;
+        text-align:center;
+    }
+li
+{
+    display: inline-block
+}
+.myBookDetail
+{
+    width:580px;
+}
+.secondPart
+{
+    width:580px;
+}

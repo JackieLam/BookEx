@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>个人主页</title>
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/template.css")}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/homePage.css")}}" />
+    <script type="text/javascript" src="{{static_url("js/jquery.js")}}"></script>
+    <script type="text/javascript" src="{{static_url("js/template.js")}}"></script>
+    <script type="text/javascript" src="{{static_url("js/search.js")}}"></script>
+    <script type="text/javascript" src="{{static_url("js/homePage.js")}}"></script>
+</head>
+<body>
+    <nav>
+        <span id="hint">BookEx欢迎你</span>
+        <span id="login_info">
+            {% if user %}
+                <a href="homepage">{{ escape(user) }}</a> | <a href="api/v1/users/logout">退出</a>
+            {% else %}
+                <a href="api/v1/users/login">登录</a> | <a href="api/v1/users/register">注册</a>
+            {% end %}
+        </span>
+        <div class="clear"></div>
+    </nav>
+    <div class ="bigBody">
+        <div class ="firstPart">
+		    <img src="{{static_url("img/1.jpg")}}">
+            
+            <div class="personInfo">
+                <p class="userName">阿土伯</p>
+                <p class="userLocation">广州大学城</p>
+                <p class="communicate">xxx@gmail.com</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <hr />
+        <div class ="secondPart">
+            <span class="myBook">我的书</span>
+            <ul class="myBookDetail">
+                <li>
+                    <img  src="{{static_url("img/2.jpg")}}">
+                    <p>书本</p>
+                </li>
+                <li>
+                    <img src="{{static_url("img/3.jpg")}}">
+                    <p>书本</p>
+                </li>
+                <li>
+                    <img  src="{{static_url("img/4.jpg")}}">
+                    <p>书本啊啊</p>
+                </li>
+                 <li>
+                    <img src="{{static_url("img/2.jpg")}}">
+                     <p>书本啊深</p>
+                </li>
+                 <li>
+                    <img src="{{static_url("img/3.jpg")}}">
+                     <p>书本</p>
+                </li>
+            </ul>
+        </div>
+        <hr />
+         <div class ="thirdPart">
+            <span class="myFavBook">我的收藏</span>
+            <ul class="myDetail">
+                <li>
+                    <img  src="{{static_url("img/2.jpg")}}">
+                    <p>书本</p>
+                </li>
+                <li>
+                    <img src="{{static_url("img/3.jpg")}}">
+                    <p>书本</p>
+                </li>
+                <li>
+                    <img  src="{{static_url("img/4.jpg")}}">
+                    <p>书本啊啊</p>
+                </li>
+                 <li>
+                    <img src="{{static_url("img/2.jpg")}}">
+                     <p>书本啊深</p>
+                </li>
+                 <li>
+                    <img src="{{static_url("img/3.jpg")}}">
+                     <p>书本</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+.book_container {
+    width: 1050px;
+    margin: auto;
+    padding: 20px;
+    border-bottom: 1px solid #e5ebe4;
+}
+
+.cover {
+    width: 200px;
+    float: left;
+}
+
+.bookInfo {
+    float: left;
+    margin-left: 50px;
+}
+
+.no_result_hint {
+    padding-top: 20px;
+    width:500px;
+    margin:auto;
+}
+
+    .no_result_hint a {
+        color: #3ba354;
+        font-size: larger;
+        padding:5px;
+    }
+#addThisBook {
+    margin-top: 20px;
+    margin-left:400px;
+    background-color:#3ba354;
+    color: #fff;
+    
+    width:100px;
+    height:60px;
+    border-radius:10px;
+}

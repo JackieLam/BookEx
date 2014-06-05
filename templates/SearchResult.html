@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/template.css")}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/search.css")}}" />
+    <script type="text/javascript" src="{{static_url("js/jquery.js")}}"></script>
+    <script type="text/javascript" src="{{static_url("js/search.js")}}"></script>
+    <script type="text/javascript" src="{{static_url("js/searchMain.js")}}"></script>
+</head>
+<body>
+    <nav>
+        <span id="hint">BookEx欢迎你</span>
+        <span id="login_info">
+            
+            {% if user %}
+                <a href="./homepage">{{ escape(user) }}</a> | <a href="./api/v1/users/logout">退出</a>
+            {% else %}
+                <a href="./api/v1/users/login">登录</a> | <a href="./api/v1/users/register">注册</a>
+            {% end %}
+        </span>
+        <div class="clear"></div>
+        <div id="search_container">
+            <div id="search">
+                <span id="logo">BookEx</span>
+                <button id="search_btn" accesskey="enter"></button>
+                <input id="search_input" type="search" placeholder="输入你感兴趣的书名/作者/类别" />
+                <div class="clear"></div>
+                <div class="floatRight">
+                    <input id="radio1" type="radio" name="type" value="book_name" checked /><label for="radio1">书名</label>
+                    <input id="radio2" type="radio" name="type" value="author" /><label for="radio2">作者</label>
+                    <input id="radio3" type="radio" name="type" value="genre" /><label for="radio2">类别</label>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <article  id="result">
+        <div class="book_container">
+            <div class="cover">
+                <a href="http://read.douban.com/ebook/272318/?dcs=book-hot&amp;dcm=douban&amp;dct=read-subject" target="_blank" title="时代的噪音">
+                    <img src="http://img3.douban.com/view/ark_article_cover/cut/public/272318.jpg?v=1396492963.0" alt="时代的噪音">
+                </a>
+            </div>
+            <div class="bookInfo">
+                <p class="bookName">书名：</p>
+                <p class="author">作者：</p>
+                <p class="bookType">类别：儿童</p>
+                <p class="bookNum">x人提供此书</p>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+
+    </article>
+</body>
+</html>

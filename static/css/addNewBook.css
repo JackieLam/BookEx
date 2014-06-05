@@ -1,0 +1,41 @@
+.container {
+    width:600px;
+}
+
+.container label
+{
+    font-family: Helvetica, Arial, sans-serif;
+    display: inline-block;
+    text-align: right;
+    width: 70px;
+    font-size: 14px;
+    line-height: 30px;
+    vertical-align: middle;
+    color:#614e3c;
+    margin: 5px 0;
+}
+    .important:before {
+        content: '*';
+        color:red;
+        padding-right: 10px;
+        font-weight:bold;
+    }
+.inputBookInfo
+{
+    width:500px;
+    margin: 10px 2px;
+    float:right;
+}
+
+textarea
+{
+    display:block;
+    height:150px;
+}
+.okBtn
+{
+    width:100%;
+    text-align:center;
+    padding:10px;
+}
+
