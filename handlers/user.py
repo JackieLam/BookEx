@@ -2,7 +2,6 @@
 
 import tornado.web
 import tornado.ioloop
-import torndb
 import os
 import sys
 
@@ -31,12 +30,12 @@ class LoginHandler(BaseHandler):
 
 	def post(self):
 		userLoginFields = ['user_id', 'password']
-		userDict = self.application.db.user
+		#userDict = self.application.db.userup
 		userInfo = dict()
 		user_id = self.get_argument("user_id", None)
 		password = self.get_argument("password", None)
-		sql_sbquery = 'SELECT * FROM User WHERE user_id = \'' + user_id + '\''
-		user_row = self.applicaion.db.query(sql_sbquery)
+		sql_sbquery = 'SELECT * FROM Users WHERE user_id = \'' + user_id + '\''
+		user_row = self.application.db.query(sql_sbquery)
 		#for key in userLoginFields:
 		#	userInfo[key] = self.get_argument(key, None)
 		information = ""
@@ -47,7 +46,7 @@ class LoginHandler(BaseHandler):
 				user_row2 = self.application.db.query(sql_sbquery2)
 				if user_row2:
 				#if userInfo["password"] == searchResult["password"]:
-					self.set_secure_cookie("user", userInfo["user_id"])
+					self.set_secure_cookie("user", user_id)
 					self.redirect("/")
 					return
 				else:
@@ -71,15 +70,15 @@ class RegisterHandler(tornado.web.RequestHandler):
 					information = information)
 
 	def post(self, user_id=None):
-		userRegisteFields = ['user_id', 'password', 'confirm_password', 'email', 'address']
-		user_id = self.get_argument("user_id", None)
+		#userRegisteFields = ['user_id', 'password', 'confirm_password', 'email', 'address']
+		user_id = self.get_argument("user_id", None).encode('utf-8')
 		user_name = user_id
-		password = self.get_argument('password', None)
-		confirm_password = self.get_argument('confirm_password', None)
-		email = self.get_argument('email', None)
-		address = self.get_argument('address', None)
+		password = self.get_argument('password', None).encode('utf-8')
+		confirm_password = self.get_argument('confirm_password', None).encode('utf-8')
+		email = self.get_argument('email', None).encode('utf-8')
+		address = self.get_argument('address', None).encode('utf-8')
 		
-		userDict = self.application.db.user
+		#userDict = self.application.db.user
 		userInfo = dict()
 		#for key in userRegisteFields:
 		#	userInfo[key] = self.get_argument(key, None)
@@ -88,8 +87,8 @@ class RegisterHandler(tornado.web.RequestHandler):
 			if user_id:
 				#searchResult = userDict.find_one({"user_id": userInfo["user_id"]})
 				sql_sbquery = 'SELECT * FROM Users WHERE user_id = \'' + user_id + '\''
-				user_row = self.applicaion.db.query(sql_sbquery)
-				if searchResult:
+				user_row = self.application.db.query(sql_sbquery)
+				if user_row:
 					information = "该帐号已被注册"
 				else:
 					#userDict.insert(userInfo)
