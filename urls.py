@@ -10,5 +10,5 @@ urls = [
     (r'/api/v1/users/login', LoginHandler),
     (r'/api/v1/users/logout', LogoutHandler),
     (r'/api/v1/users/register', RegisterHandler),
-    (r'/api/v1', MainHandler)
+    (r'/', MainHandler)
 ]
