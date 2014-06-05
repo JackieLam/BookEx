@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/register.css")}}" />
+</head>
+<body>
+    <form action="/api/v1/users/register" method="post">
+    <nav>
+        <span id="hint">BookEx欢迎你</span>
+        <div class="clear"></div>
+        <div id="search_container">
+            <div id="search">
+                <span id="logo">BookEx</span>
+                <span id="title">账号</span>
+            </div>
+        </div>
+    </nav>
+    <hr />
+
+    <div id="container">
+        <br />
+        <div class="item">
+            <label class="tip">{{information}}</label>
+        </div>
+        <br />
+        <div class="item">
+            <label class="inner">帐号</label>
+            <input type="text" placeholder="Name" name="user_id"/>
+        </div>
+        <br />
+        <div class="item">
+            <label class="inner">密码</label>
+            <input type="password" placeholder="Password" name="password"/>
+        </div>
+        <br />
+        <div class="item">
+            <label class="inner2">重复密码</label>
+            <input type="password" placeholder="Password Again" name="confirm_password"/>
+        </div>
+        <br />
+        <div class="item">
+            <label class="inner">邮箱</label>
+            <input type="text" placeholder="Mail" name="email"/>
+        </div>
+        <br />
+        <div class="item">
+            <label class="inner">地址</label>
+            <input type="text" placeholder="Address" name="address"/>
+        </div>
+        <br />
+        <input class="submit" type="submit"/>
+        
+    </div>
+  
+</body>
+</html>

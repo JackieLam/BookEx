@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/login.css")}}"/>
+</head>
+<body>
+    <form action="/api/v1/users/login" method="post">
+    <nav>
+        <span id="hint">BookEx欢迎你</span>
+        <div class="clear"></div>
+        <div id="search_container">
+            <div id="search">
+                <span id="logo">BookEx</span>
+                <span id="title">账号</span>
+            </div>
+        </div>
+    </nav>
+    <hr />
+
+    <div id="container">
+        <br />
+        <div class="item">
+            <lable class="tip">{{information}}</lable>
+        </div>
+        <div class="item">
+            <label class="inner">帐号</label>
+            <input type="text" placeholder="Name" name="user_id"/>
+        </div>
+        <br />
+        <div class="item">
+            <label class="inner">密码</label>
+            <input type="password" placeholder="Password" name="password"/>
+        </div>
+        <br />
+        <input class="submit" type="submit"/>
+        
+    </div>
+  
+</body>
+</html>
