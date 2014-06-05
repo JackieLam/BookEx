@@ -20,7 +20,7 @@ class Application(tornado.web.Application):
             "static_path": os.path.join(os.path.dirname(__file__), "static")
         }
         tornado.web.Application.__init__(self, handlers, **settings)
-        self.db = torndb.Connection('localhost','mysql',user='root',password='lin984024')
+        self.db = torndb.Connection('localhost','mysql',user='root',password='')
         # drop_sen = 'DROP TABLE IF EXISTS Book, Users'
         # self.db.execute(drop_sen)
         book_create = 'CREATE TABLE IF NOT EXISTS Book(book_name VARCHAR(40), author VARCHAR(40), genre VARCHAR(40), summary TEXT, CONSTRAINT pk_book PRIMARY KEY(book_name))'
