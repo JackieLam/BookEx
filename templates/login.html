@@ -3,12 +3,16 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="{{static_url("css/template.css")}}" />
     <link rel="stylesheet" type="text/css" href="{{static_url("css/login.css")}}"/>
 </head>
 <body>
     <form action="/api/v1/users/login" method="post">
     <nav>
         <span id="hint">BookEx欢迎你</span>
+        <span id="login_info">
+            <a href="../../../api/v1/users/register">注册</a>
+        </span>
         <div class="clear"></div>
         <div id="search_container">
             <div id="search">

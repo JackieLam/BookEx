@@ -2,12 +2,16 @@
 <html>
 <head>
     <title></title>
+	<link rel="stylesheet" type="text/css" href="{{static_url("css/template.css")}}" />
     <link rel="stylesheet" type="text/css" href="{{static_url("css/register.css")}}" />
 </head>
 <body>
     <form action="/api/v1/users/register" method="post">
     <nav>
         <span id="hint">BookEx欢迎你</span>
+        <span id="login_info">
+            <a href="../../../api/v1/users/login">登录</a>
+        </span>
         <div class="clear"></div>
         <div id="search_container">
             <div id="search">
