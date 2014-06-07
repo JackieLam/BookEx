@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <title></title>
     <link rel="stylesheet" type="text/css" href="{{static_url("css/template.css")}}" />
+    <link rel="stylesheet" type="text/css" href="{{static_url("css/bookShow.css")}}" />
     <script type="text/javascript" src="{{static_url("js/jquery.js")}}"></script>
-    <script type="text/javascript" src="{{static_url("js/template.js")}}"></script>
     <script type="text/javascript" src="{{static_url("js/search.js")}}"></script>
+    <script type="text/javascript" src="{{static_url("js/bookShow.js")}}"></script>
 </head>
 <body>
     <nav>
@@ -27,24 +28,39 @@
                 <div class="floatRight">
                     <input id="radio1" type="radio" name="type" value="book_name" checked /><label for="radio1">书名</label>
                     <input id="radio2" type="radio" name="type" value="author" /><label for="radio2">作者</label>
-                    <input id="radio3" type="radio" name="type" value="genre" /><label for="radio3">类别</label>
+                    <input id="radio3" type="radio" name="type" value="genre" /><label for="radio2">类别</label>
                 </div>
             </div>
         </div>
     </nav>
-    <menu>
-        <ul>
-            <li>教材教辅</li>
-            <li>少儿</li>
-            <li>文学艺术</li>
-            <li>人文社科</li>
-            <li>经济管理</li>
-            <li>励志与成功</li>
-            <li>科技</li>
-        </ul>
-    </menu>
     <article>
-        <ul id="books"></ul>
-    </article>
+        <div class="book_container" id="book">
+            <div class="cover">
+                <a href="http://read.douban.com/ebook/272318/?dcs=book-hot&amp;dcm=douban&amp;dct=read-subject" target="_blank" title="时代的噪音">
+                    <img src="{{static_url("img/2.jpg")}}" alt="时代的噪音">
+                </a>
+            </div>
+            <div class="bookInfo" id="bookInfo"">
+                <button id="punish">我要提供此书</button>
+            </div>
+            <div class="clear"></div>
+        </div>
+        <br />
+        <div class="introduction" id="information">
+        </div>
+        <br />
+        <div class="introduction" id="comment_content">
+            <h3 class="headline">评论</h3><hr />
+        </div>
+        <br />
+        <div class="introduction">
+            <h3 class="headline">添加评论</h3>
+            <hr />
+            <textarea id="comment_input">
+            </textarea>
+            <button id="comment">
+                发表
+            </button>
+        </div>
 </body>
 </html>

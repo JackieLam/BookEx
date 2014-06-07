@@ -1,4 +1,4 @@
-#coding:utf-8
+#coding:utf8
 
 import tornado.web
 import torndb
@@ -14,7 +14,7 @@ class BookHandler(tornado.web.RequestHandler):
 		for key in book_fields:
 			search[key] = self.get_argument(key, None)
 			if search[key] != None:
-				search[key] = search[key].encode("utf-8")
+				search[key] = search[key].encode('utf-8')
 			else: 
 				search.pop(key)
 
@@ -25,10 +25,10 @@ class BookHandler(tornado.web.RequestHandler):
 		first = True
 		for key in search.keys():
 			if not first:
-				condition += ' AND b.%s LIKE \'%s\'' % (key, search[key])
+				condition += ' AND b.%s = \'%s\'' % (key, search[key])
 			else:
 				first = False
-				condition += 'b.%s LIKE \'%s\'' % (key, search[key])
+				condition += 'b.%s = \'%r\'' % (key, search[key])
 
 		if condition != "":
 			q_sentence = "SELECT * FROM Book b WHERE " + condition
@@ -41,8 +41,8 @@ class BookHandler(tornado.web.RequestHandler):
 			result.append(book)
 		
 		print "Return -- " + str(result)
-		self.write(str(result))	#不能返回python的list数据格式，需要把list转换成字符串
-		#没有把unicode转换成utf-8码
+
+		self.write(json.dumps(result))
 
 class AddBookHandler(tornado.web.RequestHandler):
 	# 暂时没有考虑book_name重复的情况应该怎么通知用户/修改数据库
@@ -57,21 +57,24 @@ class AddBookHandler(tornado.web.RequestHandler):
 		# 1. Insert into the Book Table
 		tup = (book_name, author, genre, summary)
 		sql_sent = 'INSERT INTO Book VALUES' + str(tup)
+
 		self.application.db.execute(sql_sent)
 
 		# 2. Insert into the BorrowBook Table
 		tup2 = (user_id, book_name, 'available', 0)
 		sql_sent2 = 'INSERT INTO BorrowBook VALUES' + str(tup2)
+
 		self.application.db.execute(sql_sent2)
 
-		self.write(str(tup))
+		self.write(json.dumps(tup))
 
 class DeleteBookHandler(tornado.web.RequestHandler):
 	def delete(self):
 
 		book_name = self.get_argument('book_name').encode('utf-8')
-		user_id = self.get_argument('user_id')
+		user_id = self.get_argument('user_id').encode('utf-8')
 
+		# [WARNING] - Should first check out whether the book is owned by the owner
 		# 0. Find out the book in the Book Table first
 		sql_sent0 = 'SELECT * FROM Book WHERE book_name = \'' + book_name + '\''
 		book = self.application.db.query(sql_sent0)
@@ -86,4 +89,4 @@ class DeleteBookHandler(tornado.web.RequestHandler):
 		sql_sent3 = 'DELETE FROM SaveBook WHERE book_name = \'' + book_name + '\' AND user_id = \'' + user_id + '\''
 		self.application.db.execute(sql_sent3)
 
-		self.write(str(book))
+		self.write(json.dumps(book))

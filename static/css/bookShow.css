@@ -1,0 +1,75 @@
+.book_container {
+    width: 1050px;
+    margin: auto;
+    padding: 20px;
+    border-bottom: 2px solid  #999999;
+}
+
+.cover {
+    width: 200px;
+    float: left;
+}
+
+.bookInfo {
+    float: left;
+    margin-left: 50px;
+}
+
+.no_result_hint {
+    padding-top: 20px;
+}
+
+    .no_result_hint a {
+        color: #00ff90;
+        font-size: larger;
+        padding:5px;
+    }
+.container {
+    width: 1050px;
+    margin: auto;
+    padding: 20px;
+}
+#addThisBook {
+    background-color:#00ff90;
+    color: #fff;
+    
+    width:100px;
+    height:80px;
+    border-radius:20px;
+}
+button
+{
+	font:15px "Microsoft YaHei",Arial,Helvetica,sans-serif,"ËÎÌו";
+	padding:8px;
+}
+.introduction
+{
+	width:74%;
+	margin-left:13%;
+	margin-right:13%;
+	font-family:"Microsoft YaHei",Arial,Helvetica,sans-serif,"ËÎÌו";
+}
+.headline
+{
+	color: #825d5b;
+	font-weight: bold;
+}
+hr
+{
+	size:1;
+	color: #e5ebe4;
+}
+textarea
+{
+	width:100%;
+	height:100px;
+	border:1px solid #999999;
+}
+#comment
+{
+	float:right;
+}
+.user_name {
+    text-align:right;
+    border-bottom:1px dashed #825d5b;
+}

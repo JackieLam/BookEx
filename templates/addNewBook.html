@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <title>添加新书</title>
@@ -13,7 +13,7 @@
         <span id="hint">BookEx欢迎你</span>
         <span id="login_info">
             {% if user %}
-                <a href="homepage">{{ escape(user) }}</a> | <a href="api/v1/users/logout">退出</a>
+                <a href="homepage" id="user_id">{{ escape(user) }}</a> | <a href="api/v1/users/logout">退出</a>
             {% else %}
                 <a href="api/v1/users/login">登录</a> | <a href="api/v1/users/register">注册</a>
             {% end %}
@@ -28,7 +28,7 @@
                 <div class="floatRight">
                     <input id="radio1" type="radio" name="type" value="book_name" checked /><label for="radio1">书名</label>
                     <input id="radio2" type="radio" name="type" value="author" /><label for="radio2">作者</label>
-                    <input id="radio3" type="radio" name="type" value="genre" /><label for="radio2">类别</label>
+                    <input id="radio3" type="radio" name="type" value="genre" /><label for="radio3">类别</label>
                 </div>
             </div>
         </div>

@@ -1,4 +1,5 @@
 import tornado.web
+import json
 
 class BorrowBookHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -13,7 +14,8 @@ class BorrowBookHandler(tornado.web.RequestHandler):
 			sql_searchbook = 'SELECT * FROM Book WHERE book_name = \'' + book_name + '\''
 			books = self.application.db.query(sql_searchbook)
 			books[0]['state'] = row_borrowbooks[0]['state']
-			self.write(str(books[0]))
+
+			self.write(json.dumps(books[0]))
 		else:
 			sql_search = 'SELECT * FROM BorrowBook WHERE owner_id = \'' + owner_id + '\''
 			row_borrowbooks = self.application.db.query(sql_search)
@@ -24,9 +26,9 @@ class BorrowBookHandler(tornado.web.RequestHandler):
 				books = self.application.db.query(sql_searchbook)
 				if len(books) > 0: 
 					books[0]['state'] = row['state']
-					result.append(str(books[0]))
+					result.append(books[0])
 
-			self.write(str(result))
+			self.write(json.dumps(result))
 
 
 	def post(self):
@@ -46,4 +48,4 @@ class BorrowBookHandler(tornado.web.RequestHandler):
 		sql_search = 'SELECT * FROM BorrowBook WHERE owner_id = \'' + owner_id + '\' AND book_name = \'' + book_name + '\''
 		book = self.application.db.query(sql_search)
 
-		self.write(str(book))
+		self.write(json.dumps(book))

@@ -126,3 +126,11 @@ article .info {
     float:right;
     color: #614e3c;
 }
+.greenBtn{
+padding: 10px 15px;
+background-color: #3ba354;
+color: #fff;
+width: 100px;
+height: 60px;
+border-radius: 10px;
+}
