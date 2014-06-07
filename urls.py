@@ -1,16 +1,10 @@
 #coding:utf-8
 
-<<<<<<< HEAD
-from handlers.user import LoginHandler
-from handlers.user import LogoutHandler
-from handlers.user import RegisterHandler
-=======
 from handlers.index import *
 from handlers.user import LoginHandler
 from handlers.user import LogoutHandler
 from handlers.user import RegisterHandler
 from handlers.user import UserInfoHandler
->>>>>>> c922e53e31303221991b1ed661ab6972b3fda95c
 from handlers.index import MainHandler
 from handlers.book import BookHandler, AddBookHandler, DeleteBookHandler
 from handlers.save import SaveBookHandler
