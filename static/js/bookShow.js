@@ -47,20 +47,23 @@ $(function () {
                         console.log(data);
 
                         var i = 0;
-                        if (data) {
-                            $("#comment_content").show();
-                        }
-                        else {
+                        
+                        if (data.length === 0) {
                             $("#comment_content").hide();
                         }
-                        while (data[i].content) {
-                            var content = "<p>" + data[i].content + "</p>" +
-                                "<p class=\"user_name\">By: " + data[i].user_id + "</p>";
+                        else {
+                            
+                            $("#comment_content").show();
+                            while (data[i]) {
+                                var content = "<p>" + data[i].content + "</p>" +
+                                    "<p class=\"user_name\">By: " + data[i].user_id + "</p>";
 
 
-                            $("#comment_content").append(content);
-                            i++;
+                                $("#comment_content").append(content);
+                                i++;
+                            }
                         }
+                       
                     }
                 });
             }
@@ -78,8 +81,10 @@ $(function () {
                     alert("评论不能为空！");
                 }
                 else {
+                    console.log(comment_input);
                     $.ajax({
                         type: "post",
+                        dataType: "json",
                         data: {
                             "book_name": book_id,
                             "user_id": user,
@@ -88,6 +93,13 @@ $(function () {
                         url: "api/v1/comment",
                         success: function (data) {
                             console.log(data);
+                            $("#comment_content").show();
+
+                            var content = "<p>" + data[0].content + "</p>" +
+                               "<p class=\"user_name\">By: " + data[0].user_id + "</p>";
+
+
+                            $("#comment_content").append(content);
                         }
                     });
                 }

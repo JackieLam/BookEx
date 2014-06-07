@@ -29,7 +29,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"教材教辅\"" },
+                    data: { "genre": "\"eduBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};
@@ -51,7 +51,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"少儿\"" },
+                    data: { "genre": "\"kidBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};
@@ -73,7 +73,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"文学艺术\"" },
+                    data: { "genre": "\"artBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};
@@ -95,7 +95,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"人文社科\"" },
+                    data: { "genre": "\"peoBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};
@@ -117,7 +117,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"经济管理\"" },
+                    data: { "genre": "\"ecoBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};
@@ -139,7 +139,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"励志与成功\"" },
+                    data: { "genre": "\"sucBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};
@@ -161,7 +161,7 @@ $(document).ready(function () {
                 $.ajax({
                     dataType: "json",
                     url: "api/v1/books",
-                    data: { "genre": "\"科技\"" },
+                    data: { "genre": "\"techBook\"" },
                     success: function (data) {
                         console.log(data);
                         var book = {};

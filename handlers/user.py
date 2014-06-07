@@ -72,6 +72,7 @@ class LogoutHandler(BaseHandler):
 	def get(self):
 		self.set_secure_cookie("user", "")
 		self.write("logout succeed\n")
+		self.redirect("/")
 
 class RegisterHandler(tornado.web.RequestHandler):
 	def get(self):
