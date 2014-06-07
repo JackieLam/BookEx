@@ -27,3 +27,8 @@ class HomepageHandler(tornado.web.RequestHandler):
     def get(self):
 		user = self.get_secure_cookie("user")
 		self.render('homePage.html',user=user)
+		
+class BookShowHandler(tornado.web.RequestHandler):
+    def get(self):
+		user = self.get_secure_cookie("user")
+		self.render('bookShow.html',user=user)

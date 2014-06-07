@@ -4,6 +4,7 @@ import tornado.web
 import tornado.ioloop
 import os
 import sys
+import json
 
 import pymongo
 
@@ -12,6 +13,15 @@ from model.entity import *
 class BaseHandler(tornado.web.RequestHandler):
 	def getCurrentUser(self):
 		return self.get_secure_cookie("user")
+
+class UserInfoHandler(BaseHandler):
+	def post(self):
+		user_id = self.get_argument("user_id", None)
+		sql_sbquery = 'SELECT * FROM Users WHERE user_id = \'' + user_id + '\''
+		#result = []
+		user_info = self.application.db.query(sql_sbquery)
+		#result.append(user_info)
+		self.write(json.dumps(user_info))
 
 class MainHandler(BaseHandler):
 	def get(self):
@@ -77,7 +87,7 @@ class RegisterHandler(tornado.web.RequestHandler):
 		confirm_password = self.get_argument('confirm_password', None).encode('utf-8')
 		email = self.get_argument('email', None).encode('utf-8')
 		address = self.get_argument('address', None).encode('utf-8')
-		
+
 		#userDict = self.application.db.user
 		userInfo = dict()
 		#for key in userRegisteFields:

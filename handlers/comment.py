@@ -1,11 +1,13 @@
 import tornado.web
+import json
 
 class CommentHandler(tornado.web.RequestHandler):
 	def get(self):
 		book_name = self.get_argument('book_name').encode('utf-8')
 		select_comment = 'SELECT * FROM Comment WHERE book_name = \'' + book_name + '\''
 		rows = self.application.db.query(select_comment)
-		self.write(str(rows))
+
+		self.write(json.dumps(rows))
 
 	def post(self):
 		book_name = self.get_argument('book_name').encode('utf-8')
@@ -21,7 +23,7 @@ class CommentHandler(tornado.web.RequestHandler):
 		select_comment = 'SELECT * FROM Comment WHERE book_name = \'' + book_name + '\' AND user_id = \'' + user_id + '\''
 		post_result = self.application.db.query(select_comment)
 
-		self.write(str(post_result))
+		self.write(json.dumps(post_result))
 
 	def delete(self):
 		book_name = self.get_argument('book_name').encode('utf-8')
@@ -33,4 +35,4 @@ class CommentHandler(tornado.web.RequestHandler):
 		delete_comment = 'DELETE FROM Comment WHERE book_name = \'' + book_name + '\' AND user_id = \'' + user_id + '\''
 		self.application.db.execute(delete_comment)
 
-		self.write(str(result))
+		self.write(json.dumps(result))
