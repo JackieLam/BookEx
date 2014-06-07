@@ -1,7 +1,7 @@
 BookEx
 ======
 
-Second-hand books exchange platform for Sun Yat-sen University, based on Web 2.0.
+Second-hand books exchange platform for Sun Yat-sen University, based on Tornado+MySQL and SAE service. Using MVC and C/S design. 
 
 传送门-><a href="http://sysubookex.sinaapp.com/">http://sysubookex.sinaapp.com/</a>
 
