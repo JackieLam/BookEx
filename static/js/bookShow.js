@@ -20,14 +20,19 @@ $(function () {
         $.ajax({
             dataType: "json",
             url: "api/v1/books",
-            data: { "book_name": book_id },
+            data: { "isbn": book_id },
             success: function (data) {
                 console.log(data);
 
-                $bookItem = "<p class=\"bookName\">书名：" + data[0].book_name + "</p>" +
-                    "<p class=\"author\">作者：" + data[0].author + "</p><p class=\"bookType\">类别：" + data[0].genre + "</p>" +
-                    "<p class=\"bookNum\">x人提供此书</p>";
+                var $bookCover = "<div class=\"cover\"><a href=\'book?book_id=" + data[0].isbn + "\' target=\"_blank\" title=\"" + data[0].book_name +
+                                        "\"><img src=\"" + data[0].image_url + "\" alt=\"" + data[0].book_name +
+                                    "\"></a></div>";
 
+                var $bookItem = "<p class=\"bookName\">书名：" + data[0].book_name + "</p>" +
+                    "<p class=\"author\">作者：" + data[0].author + "</p><p class=\"bookType\">类别：" + data[0].genre + "</p>" +
+                    "<p class=\"isbn\">ISBN：<span id=\"isbn\">"+data[0].isbn+"</span></p>";
+
+                $("#book").prepend($bookCover);
                 $("#bookInfo").prepend($bookItem);
 
                 if (data[0].summary) {
@@ -41,7 +46,7 @@ $(function () {
 
                 $.ajax({
                     dataType: "json",
-                    data: { "book_name": book_id },
+                    data: { "isbn": book_id },
                     url: "api/v1/comment",
                     success: function (data) {
                         console.log(data);
@@ -55,9 +60,16 @@ $(function () {
                             
                             $("#comment_content").show();
                             while (data[i]) {
-                                var content = "<p>" + data[i].content + "</p>" +
-                                    "<p class=\"user_name\">By: " + data[i].user_id + "</p>";
-
+                                var content;
+                         
+                                if (user == data[i].user_id) {
+                                    content = "<p><button class=\"delete greenBtn\" id=\"deletebook\">删除</button>" + data[i].content + "</p>" +
+                                    "<p class=\"user_name\">By: <span class=\"users\">"+ data[i].user_id + "</span></p>";
+                                }
+                                else {
+                                    content = "<p>" + data[i].content + "</p>" +
+                                    "<p class=\"user_name\">By: <span class=\"users\">"+ data[i].user_id + "</span></p>";
+                                }
 
                                 $("#comment_content").append(content);
                                 i++;
@@ -65,6 +77,22 @@ $(function () {
                         }
                        
                     }
+                }).done(function () {
+                    $("#deletebook").click(function () {
+                        var isbn = $("#isbn").val().toString();
+                        var user_id = $("#user_id").val().toString();
+                        console.log(isbn + user_id);
+
+                        $.ajax({
+                            type: "DELETE",
+                            dataType: "json",
+                            url: "/api/v1/comment",
+                            data: { "isbn": isbn, "user_id": user_id },
+                            success: function (data) {
+                                alert("删除评论成功！");
+                            }
+                        });
+                    });
                 });
             }
         });
@@ -86,27 +114,22 @@ $(function () {
                         type: "post",
                         dataType: "json",
                         data: {
-                            "book_name": book_id,
+                            "isbn": book_id,
                             "user_id": user,
                             "content": comment_input
                         },
                         url: "api/v1/comment",
                         success: function (data) {
                             console.log(data);
-                            $("#comment_content").show();
 
-                            var content = "<p>" + data[0].content + "</p>" +
-                               "<p class=\"user_name\">By: " + data[0].user_id + "</p>";
-
-
-                            $("#comment_content").append(content);
+                            location.reload();
+                        },
+                        error: function () {
+                            alert("不好意思，您只能对同一本书评论一次~");
                         }
                     });
                 }
             }
         });
     }
-
-
-
 });

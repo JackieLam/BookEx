@@ -5,7 +5,7 @@ import torndb
 import json
 
 #param of a book
-book_fields = ['isbn', 'book_name', 'author', 'genre', 'image_url', 'summary']
+book_fields = ['isbn', 'book_name', 'author', 'image_url','genre', 'image_url', 'summary']
 
 class BookHandler(tornado.web.RequestHandler):
 	def get(self):
@@ -27,10 +27,10 @@ class BookHandler(tornado.web.RequestHandler):
 		first = True
 		for key in search.keys():
 			if not first:
-				condition += ' AND b.%s = \'%s\'' % (key, search[key])
+				condition += ' AND b.%s LIKE \'%s\'' % (key, search[key])
 			else:
 				first = False
-				condition += 'b.%s = \'%s\'' % (key, search[key])
+				condition += 'b.%s LIKE \'%s\'' % (key, search[key])
 
 		if condition != "":
 			q_sentence = "SELECT * FROM Book b WHERE " + condition
@@ -52,13 +52,14 @@ class AddBookHandler(tornado.web.RequestHandler):
 		isbn = self.get_argument('isbn', None).encode('utf8')
 		book_name = self.get_argument('book_name', None).encode('utf8')
 		author = self.get_argument('author', None).encode('utf8')
+		image_url = self.get_argument('image_url', None).encode('utf8')
 		genre = self.get_argument('genre', None).encode('utf8')
 		summary = self.get_argument('summary', None).encode('utf8')
 		user_id = self.get_argument('user_id', None).encode('utf8')
 
 		print "我操为什么是unicode啊 - ", book_name
 		# 1. Insert into the Book Table
-		tup = (isbn, book_name, author, genre, summary)
+		tup = (isbn, book_name, author, image_url, genre, summary)
 		print "我操为什么乱码啊 - ", tup
 		sql_sent = 'INSERT INTO Book VALUES' + str(tup)
 
@@ -69,7 +70,6 @@ class AddBookHandler(tornado.web.RequestHandler):
 		sql_sent2 = 'INSERT INTO BorrowBook VALUES' + str(tup2)
 
 		self.application.db.execute(sql_sent2)
-
 		self.write(json.dumps(tup))
 
 class DeleteBookHandler(tornado.web.RequestHandler):
