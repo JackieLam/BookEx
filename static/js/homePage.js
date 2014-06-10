@@ -9,7 +9,7 @@ $(function () {
             type: "POST",
             dataType: "json",
             url: "/api/v1/info",
-            data: {"user_id": user},
+            data: {"user_id": user.toString()},
             success: function (data) {
                 $("#userName").html("名字："+data[0].user_name);
                 $("#userLocation").html("地址："+data[0].address);

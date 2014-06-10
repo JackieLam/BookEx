@@ -1,6 +1,7 @@
 body {
     margin: 0;
 }
+
 a {
     text-decoration: none;
     color: #d5d5d5;
@@ -47,19 +48,20 @@ nav {
     width: 200px;
     font-size: 60px;
     color: #614e3c;
+    cursor: pointer;
 }
 
 #search_input {
     float: right;
     width: 322px;
     height: 28px;
-    
 }
+
 #search_btn {
-    border:1px solid #808080;
+    border: 1px solid #808080;
     float: right;
-    width:28px;
-    height:28px;
+    width: 28px;
+    height: 28px;
     background: #fff url(../img/search.png) no-repeat center content-box;
 }
 
@@ -71,8 +73,7 @@ nav {
     border-bottom: 1px solid #e5ebe4;
 }
 
-menu
-{
+menu {
     padding: 0;
     display: block;
     width: 100%;
@@ -82,15 +83,16 @@ menu
     background-color: #f7f3f3;
 }
 
-menu li {
-    float: left;
-    width: 150px;
-    text-align: center;
-    line-height: 40px;
-    color: #614e3c;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 13px;
-}
+    menu li {
+        float: left;
+        width: 150px;
+        text-align: center;
+        line-height: 40px;
+        color: #614e3c;
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 13px;
+        cursor: pointer;
+    }
 
 article li {
     width: 210px;
@@ -122,15 +124,26 @@ article .info {
     margin: auto;
     padding: 20px;
 }
+
 .floatRight {
-    float:right;
+    float: right;
     color: #614e3c;
 }
-.greenBtn{
-padding: 10px 15px;
-background-color: #3ba354;
-color: #fff;
-width: 100px;
-height: 60px;
-border-radius: 10px;
+
+.greenBtn {
+    padding: 10px 15px;
+    background-color: #3ba354;
+    color: #fff;
+    width: 100px;
+    height: 60px;
+    border-radius: 10px;
+}
+
+.delete {
+    padding: 3px 5px;
+    width: 50px;
+    height:30px;
+    display: inline-block;
+    cursor: pointer;
+    margin-right:10px;
 }
