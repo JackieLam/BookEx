@@ -112,3 +112,7 @@ class RegisterHandler(tornado.web.RequestHandler):
 			information = "两次密码输入不一致"
 		self.render("register.html",
 					information = information)
+
+class UserInfoHandler(tornado.web.RequestHandler):
+	def get(self):
+		user_id = self.get_argument('user_id')
